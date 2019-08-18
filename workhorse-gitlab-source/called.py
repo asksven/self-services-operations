@@ -5,6 +5,9 @@ import os
 import argparse
 import json
 import sys
+import logging
+
+logging.basicConfig(format='%(asctime)s %(levelname)s:%(message)s', level=logging.INFO)
 
 parser = argparse.ArgumentParser(description='Create a team and dashboards for an app')
 
@@ -23,11 +26,11 @@ parser.add_argument('Editor',
 args = parser.parse_args()
 
 #input_path = args.App
-print('App: %s' % args.App)
-print('Editor: %s' % args.Editor)
+logging.info('App: %s' % args.App)
+logging.info('Editor: %s' % args.Editor)
 
 
-print(os.environ['GRAFANA_HOST'])
+logging.info(os.environ['GRAFANA_HOST'])
 
 try:
     grafana_api = GrafanaFace(auth=(os.environ['GRAFANA_USER'], os.environ['GRAFANA_PWD']),protocol='https', host=os.environ['GRAFANA_HOST'])
@@ -39,11 +42,11 @@ try:
         user_id = user["id"]
         print(user)
     except:
-        sys.stderr.write('User does not exist. Aborting!')
+        logging.critical('User does not exist. Aborting!')
         exit(1)
 
     name = 'Team %s' % args.App
-    print('Searching for team %s' % name)
+    logging.info('Searching for team %s' % name)
     team = grafana_api.teams.get_team_by_name(name)
     print(team)
     if not team:

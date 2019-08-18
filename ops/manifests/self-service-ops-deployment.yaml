@@ -1,0 +1,39 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  labels:
+    app: self-service-ops
+  name: self-service-ops
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: self-service-ops  
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: self-service-ops
+    spec:
+      containers:
+      - name: self-service-ops
+        envFrom:
+        - configMapRef:
+            name: self-service-ops-env-configmap
+        - secretRef:
+            name: self-service-ops-env-secrets     
+        image: {{ DOCKER_REGISTRY }}/{{ DOCKER_REGISTRY_NS }}/self-service-ops:latest
+        imagePullPolicy: IfNotPresent
+#        resources:
+#          limits:
+#            cpu: 100m
+#            memory: 1000Mi
+#          requests:
+#            cpu: 20m    
+#            memory: 20Mi  
+      restartPolicy: Always
+      imagePullSecrets:
+      - name: regcred      
+status: {}
+

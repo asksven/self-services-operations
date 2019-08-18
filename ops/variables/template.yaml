@@ -1,0 +1,11 @@
+hosts:
+  gitlab-url: https://<gitlab-base-url>/
+  grafana-url: <grafana-uri>
+gitlab:
+  token: <gitlab-token>
+  project: <gitlab-group>/<gitlab-project>
+grafana:
+  apikey: <grafana-api-key>
+  user: <grafana-user>
+  password: <grafana-password>
+  source-folder-id: <id-of-the grafana-template-dir>

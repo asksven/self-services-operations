@@ -1,0 +1,37 @@
+variables:
+  GIT_SSL_NO_VERIFY: "1"
+  NAMESPACE: self-service-ops
+
+stages:
+  - deploy
+  - status
+  - logs
+
+deploy app:
+  stage: deploy
+  image: codemelter/docker-kubernetes-deploy
+  tags:
+  - <runner-tag>  
+  variables:
+    DEPLOY_ENV: stage
+  script:
+    - cd ops && ./deploy.sh
+  artifacts:
+    paths:
+    - ops     
+
+get deployment status:
+  stage: status
+  image: codemelter/docker-kubernetes-deploy
+  tags:
+  - <runner-tag>
+  script:
+  - kubectl get pods,svc,deployment,ing,secret,pvc --namespace=${NAMESPACE}
+
+show webserver logs:
+  stage: logs
+  image: codemelter/docker-kubernetes-deploy
+  tags:
+  - <runner-tag>
+  script:
+  - kubectl -n ${NAMESPACE} self-service-ops logs  --timestamps=true -l app=self-service-ops

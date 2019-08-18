@@ -1,3 +1,5 @@
+setuptools
 requests
 grafana_api
 argparse
+

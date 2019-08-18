@@ -1,0 +1,10 @@
+# Use config map for not-secret configuration data
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: self-service-ops-env-configmap
+data:
+  GITLAB_URL: {{ gitlab.url }}
+  GRAFANA_HOST: {{ grafana.host }}
+  SOURCE_FOLDER_ID: "{{ grafana.folderId }}"
+  GITLAB_PROJECT: {{ gitlab.project }}
